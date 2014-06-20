@@ -97,7 +97,6 @@ class MediaItemViewController: UIViewController, MediaFetcherDelegate {
                 
             case ImageType.ProfileImage.toRaw():
                 profilePicture.image = image
-                self.spinner.stopAnimating()
                 
             default:
                 NSLog("Tag not recognised")

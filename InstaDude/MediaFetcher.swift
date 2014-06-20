@@ -21,7 +21,7 @@ class MediaFetcher {
     
     let baseURL = "https://api.instagram.com/v1/"
     let popularEndpoint = "media/popular"
-    let clientID = "YOUR_CLIENT_ID"
+    let clientID = "13653e467e794e589e557dc687bcb5e2"
     
     var lastSearchURL: String?
     

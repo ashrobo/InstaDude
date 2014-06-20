@@ -152,14 +152,14 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="heart" translatesAutoresizingMaskIntoConstraints="NO" id="QeO-X7-DYE">
                                                 <rect key="frame" x="13" y="409" width="20" height="20"/>
                                             </imageView>
-                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Uuo-xd-WbH">
-                                                <rect key="frame" x="142" y="265" width="37" height="37"/>
-                                                <color key="color" red="0.10196078431372549" green="0.31372549019607843" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
-                                            </activityIndicatorView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hVG-ex-zI4">
                                                 <rect key="frame" x="0.0" y="76" width="320" height="320"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </imageView>
+                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Uuo-xd-WbH">
+                                                <rect key="frame" x="142" y="215" width="37" height="37"/>
+                                                <color key="color" red="0.10196078431372549" green="0.31372549019607843" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
