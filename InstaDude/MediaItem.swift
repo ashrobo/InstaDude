@@ -14,7 +14,7 @@ class MediaItem {
     var username: String?
     var thumbnailURL: String?
     var mediaType: String?
-    var tags: String[]?
+    var tags: [String]?
     var sourceURL: String?
     var profilePictureURL: String?
     var likes: Int?
@@ -30,7 +30,7 @@ class MediaItem {
         } else {
             sourceURL = item.valueForKeyPath("videos.standard_resolution.url") as? String
         }
-        tags = item["tags"] as? String[]
+        tags = item["tags"] as? [String]
         profilePictureURL = item.valueForKeyPath("user.profile_picture") as? String
         likes = item.valueForKeyPath("likes.count") as? Int
        

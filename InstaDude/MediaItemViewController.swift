@@ -27,33 +27,33 @@ class MediaItemViewController: UIViewController, MediaFetcherDelegate {
     
     var mediaItem: MediaItem?
     var mediaFetcher: MediaFetcher?
-    @lazy var mediaPlayerController: MPMoviePlayerController = MPMoviePlayerController()
+    lazy var mediaPlayerController: MPMoviePlayerController = MPMoviePlayerController()
     
-    @IBOutlet var profilePicture : UIImageView
-    @IBOutlet var usernameLabel : UILabel
-    @IBOutlet var imageView : UIImageView
-    @IBOutlet var likesLabel : UILabel
-    @IBOutlet var tagsLabel : UILabel
-    @IBOutlet var spinner : UIActivityIndicatorView
-    @IBOutlet var scrollView : UIScrollView
-    @IBOutlet var container : UIView
-    
+    @IBOutlet var profilePicture : UIImageView!
+    @IBOutlet var usernameLabel : UILabel!
+    @IBOutlet var imageView : UIImageView!
+    @IBOutlet var likesLabel : UILabel!
+    @IBOutlet var tagsLabel : UILabel!
+    @IBOutlet var spinner : UIActivityIndicatorView!
+    @IBOutlet var scrollView : UIScrollView!
+    @IBOutlet var container : UIView!
+
     override func viewDidLoad() {
         
         spinner.startAnimating()
         mediaFetcher!.delegate = self
         scrollView.contentSize  = CGSizeMake(view.frame.size.width, 2000)
-        navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.niceBlue()]
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.niceBlue()]
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "mediaReady:", name: MPMoviePlayerReadyForDisplayDidChangeNotification, object: nil)
         
         if let item: MediaItem = mediaItem {
             
-            mediaFetcher?.fetchImageAtURL(item.profilePictureURL!, forTag: ImageType.ProfileImage.toRaw())
+            mediaFetcher?.fetchImageAtURL(item.profilePictureURL!, forTag: ImageType.ProfileImage.rawValue)
             
             if item.mediaType == "image" {
                 title = "Photo"
-                mediaFetcher?.fetchImageAtURL(item.sourceURL!, forTag: ImageType.MainImage.toRaw())
+                mediaFetcher?.fetchImageAtURL(item.sourceURL!, forTag: ImageType.MainImage.rawValue)
             } else {
                 title = "Video"
                 imageView.alpha = 0
@@ -65,7 +65,7 @@ class MediaItemViewController: UIViewController, MediaFetcherDelegate {
             var tagString = ""
             
             if let tagsArray = item.tags {
-                var nsArray = tagsArray.bridgeToObjectiveC()
+                var nsArray = tagsArray as NSArray
                 tagString = nsArray.componentsJoinedByString(", ")
             }
             
@@ -77,7 +77,7 @@ class MediaItemViewController: UIViewController, MediaFetcherDelegate {
     
     func playClipAtURL(urlString: String){
         
-        var url = NSURL.URLWithString(urlString)
+        var url = NSURL(string: urlString)
         mediaPlayerController.contentURL = url
          mediaPlayerController.prepareToPlay()
         mediaPlayerController.view.frame = imageView.frame
@@ -91,11 +91,11 @@ class MediaItemViewController: UIViewController, MediaFetcherDelegate {
     func didFetchImage(image: UIImage, tag: String) {
         switch tag {
             
-            case ImageType.MainImage.toRaw():
+            case ImageType.MainImage.rawValue:
                 imageView.image = image
                 self.spinner.stopAnimating()
                 
-            case ImageType.ProfileImage.toRaw():
+            case ImageType.ProfileImage.rawValue:
                 profilePicture.image = image
                 
             default:

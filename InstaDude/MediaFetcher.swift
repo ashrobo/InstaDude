@@ -10,11 +10,10 @@ import Foundation
 import UIKit
 
 @objc protocol MediaFetcherDelegate {
-    @optional func didFetchMediaItems(items: NSArray)
-    @optional func didFailToFetchMediaItems(error: NSError)
-    
-    @optional func didFetchImage(image: UIImage, tag: String)
-    @optional func didFailToFetchImage(error: NSError)
+    optional func didFetchMediaItems(items: NSArray)
+    optional func didFailToFetchMediaItems(error: NSError)
+    optional func didFetchImage(image: UIImage, tag: String)
+    optional func didFailToFetchImage(error: NSError)
 }
 
 class MediaFetcher {
@@ -34,21 +33,22 @@ class MediaFetcher {
     func get(path: String) {
         let url = NSURL(string: path)
         lastSearchURL = path
-        NSLog("Base URL is %@", url)
         
         var session = NSURLSession.sharedSession()
-        var task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
+        var task = session.dataTaskWithURL(url!, completionHandler: {data, response, error -> Void in
             println("Task completed")
-            if(error) {
-                self.delegate?.didFailToFetchMediaItems?(error!)
+            if let errorCode = error {
+                self.delegate?.didFailToFetchMediaItems?(errorCode)
+                return;
             }
-            
+
             var err: NSError?
             var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
-            if(err?) {
-                self.delegate?.didFailToFetchMediaItems?(err!)
+            if let error = err {
+                self.delegate?.didFailToFetchMediaItems?(error)
+                return
             }
-            
+
             var results: NSArray = jsonResult["data"] as NSArray
             self.delegate?.didFetchMediaItems?(results)
             })
@@ -58,12 +58,12 @@ class MediaFetcher {
     
     func fetchImageAtURL(imageURL: NSString, forTag tag: String) {
         
-        var url = NSURL.URLWithString(imageURL)
-        var request: NSURLRequest = NSURLRequest(URL: url?)
-        var urlConnection: NSURLConnection = NSURLConnection(request: request, delegate: self)
+        var url = NSURL(string: imageURL)
+        var request: NSURLRequest = NSURLRequest(URL: url!)
+        var urlConnection: NSURLConnection = NSURLConnection(request: request, delegate: self)!
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-            if !error? {
-                let image: UIImage = UIImage(data: data)
+            if error != nil {
+                let image: UIImage = UIImage(data: data)!
                 self.delegate?.didFetchImage?(image, tag: tag)
                 
             } else {

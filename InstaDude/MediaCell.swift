@@ -11,7 +11,7 @@ import UIKit
 
 class MediaCell: UICollectionViewCell {
     
-    @IBOutlet var imageView: UIImageView
-    @IBOutlet var videoImageView: UIImageView
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var videoImageView: UIImageView!
     
 }

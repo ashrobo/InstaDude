@@ -11,22 +11,21 @@ import UIKit
 
 class PhotosViewController: UIViewController, MediaFetcherDelegate, UITextFieldDelegate {
     
-    @IBOutlet var searchBackground: UIView
-    @IBOutlet var collectionView: UICollectionView
-    @IBOutlet var searchField: UITextField
+    @IBOutlet var searchBackground: UIView!
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var searchField: UITextField!
     
-    var dataSource: MediaItem[] = []
-    @lazy var mediaFetcher:MediaFetcher = MediaFetcher(delegate: self)
+    var dataSource: [MediaItem] = []
+    lazy var mediaFetcher:MediaFetcher = MediaFetcher(delegate: self)
     var imageCache = NSMutableDictionary()
-    @lazy var refreshControl: UIRefreshControl = UIRefreshControl()
+    lazy var refreshControl: UIRefreshControl = UIRefreshControl()
 
-    
     override func viewDidLoad() {
         
         mediaFetcher.fetchPopularPhotos()
         searchField.delegate = self
         
-        navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.niceBlue()]
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.niceBlue()]
         
         var visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .ExtraLight)) as UIVisualEffectView
         visualEffectView.frame = searchBackground.bounds
@@ -80,15 +79,15 @@ class PhotosViewController: UIViewController, MediaFetcherDelegate, UITextFieldD
         var mediaItem = dataSource[indexPath.item]
         
         let urlString = mediaItem.thumbnailURL
-        var image: UIImage? = self.imageCache.valueForKey(urlString) as? UIImage
+        var image: UIImage? = self.imageCache.valueForKey(urlString!) as? UIImage
         
-        if ( !image? ) {
-            var imgURL: NSURL = NSURL(string: urlString)
+        if let unwrappedImage = image {
+            var imgURL: NSURL = NSURL(string: urlString!)!
             
             var request: NSURLRequest = NSURLRequest(URL: imgURL)
-            var urlConnection: NSURLConnection = NSURLConnection(request: request, delegate: self)
+            var urlConnection: NSURLConnection = NSURLConnection(request: request, delegate: self)!
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                    if !error? {
+                    if !(error? != nil) {
                         image = UIImage(data: data)
                         
                         self.imageCache[urlString!] = image
@@ -124,15 +123,15 @@ class PhotosViewController: UIViewController, MediaFetcherDelegate, UITextFieldD
         mediaFetcher.refresh()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if segue.identifier == "showMedia" {
             if segue.destinationViewController is MediaItemViewController {
                 let mediaVC = segue.destinationViewController as MediaItemViewController
                 if sender is UICollectionViewCell {
                     let cell = sender as UICollectionViewCell
-                    let row = collectionView.indexPathForCell(cell).row
+                    let row = collectionView.indexPathForCell(cell)?.row
                     
-                    mediaVC.mediaItem = dataSource[row] as MediaItem
+                    mediaVC.mediaItem = dataSource[row!] as MediaItem
                     mediaVC.mediaFetcher = self.mediaFetcher
                 }
             }
@@ -142,7 +141,7 @@ class PhotosViewController: UIViewController, MediaFetcherDelegate, UITextFieldD
     @IBAction func finishedEditing(sender : UITextField) {
         sender.resignFirstResponder()
         
-        let length = sender.text.utf16count
+        let length = countElements(sender.text)
         if length > 0 {
             mediaFetcher.searchForItemsByTag(sender.text)
         }
